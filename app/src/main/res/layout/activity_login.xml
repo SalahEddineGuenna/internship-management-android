@@ -4,34 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ActivityRegister"
+    tools:context=".ActivityLogin"
     android:orientation="vertical"
-    android:layout_margin="20dp"
-    android:gravity="center">
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Name"
-        app:startIconDrawable="@drawable/ic_baseline_person_24"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
+    android:layout_margin="25dp"
+    android:gravity="center"
+    >
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/mail"
+        android:id="@+id/test"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:hint="mail*"
+        android:hint="mail"
         app:startIconDrawable="@drawable/ic_baseline_mail_24"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
@@ -42,15 +25,14 @@
             />
 
     </com.google.android.material.textfield.TextInputLayout>
-
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/pass"
+        android:id="@+id/test2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="password*"
+        android:hint="password"
         app:startIconDrawable="@drawable/ic_baseline_lock_24"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="20dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etPassword"
@@ -60,30 +42,16 @@
             />
 
     </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/pass1"
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Confirm password"
-        app:startIconDrawable="@drawable/ic_baseline_lock_24"
+        android:text="Sign in"
         android:layout_marginTop="20dp"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etPassword1"
-            android:inputType="textPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
-
-    </com.google.android.material.textfield.TextInputLayout>
+        android:id="@+id/bLogin"/>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Register"
-        android:layout_marginTop="20dp"
-        android:id="@+id/bRegister"
-        />
+        android:id="@+id/tvRegister"/>
 
 </LinearLayout>
