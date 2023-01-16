@@ -11,8 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.internship_management.adapter.RespoAdapter;
 import com.example.internship_management.adapter.StudentAdapter;
+import com.example.internship_management.model.ResponsableStageDTO;
 import com.example.internship_management.model.Student;
+import com.example.internship_management.retrofit.ResponsableApi;
 import com.example.internship_management.retrofit.RetrofitService;
 import com.example.internship_management.retrofit.StudentApi;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -25,10 +28,11 @@ import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link DashbordFragment#newInstance} factory method to
+ * Use the {@link RespoFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DashbordFragment extends Fragment {
+public class RespoFragment extends Fragment {
+
 
     private RecyclerView recyclerView;
     private FloatingActionButton add;
@@ -42,7 +46,7 @@ public class DashbordFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public DashbordFragment() {
+    public RespoFragment() {
         // Required empty public constructor
     }
 
@@ -52,11 +56,11 @@ public class DashbordFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment DAshbordFragment.
+     * @return A new instance of fragment respoFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static DashbordFragment newInstance(String param1, String param2) {
-        DashbordFragment fragment = new DashbordFragment();
+    public static RespoFragment newInstance(String param1, String param2) {
+        RespoFragment fragment = new RespoFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -71,47 +75,19 @@ public class DashbordFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-    }
-
-    private void loadEmployees() {
-        RetrofitService retrofitService = new RetrofitService();
-        StudentApi studentApi = retrofitService.getRetrofit().create(StudentApi.class);
-        studentApi.getAllStudents()
-                .enqueue(new Callback<List<Student>>() {
-                    @Override
-                    public void onResponse(Call<List<Student>> call, Response<List<Student>> response) {
-                        populateListView(response.body());
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<Student>> call, Throwable t) {
-                        Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
-
-    private void populateListView(List<Student> studentList) {
-        StudentAdapter studentAdapter = new StudentAdapter(studentList);
-        recyclerView.setAdapter(studentAdapter);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        loadEmployees();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_d_ashbord, container, false);
-        recyclerView = view.findViewById(R.id.employeeList_recyclerView);
+        View view = inflater.inflate(R.layout.fragment_respo, container, false);
+
+        recyclerView = view.findViewById(R.id.respo_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        
+
         add = view.findViewById(R.id.employeeList_fab);
-        
+
         add.setOnClickListener(View -> {
             Fragment fragment = new AddStudentFragment();
             loadFragment(fragment);
@@ -119,6 +95,35 @@ public class DashbordFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void loadEmployees() {
+        RetrofitService retrofitService = new RetrofitService();
+        ResponsableApi responsableApi = retrofitService.getRetrofit().create(ResponsableApi.class);
+        responsableApi.getallRsponsables()
+                .enqueue(new Callback<List<ResponsableStageDTO>>() {
+                    @Override
+                    public void onResponse(Call<List<ResponsableStageDTO>> call, Response<List<ResponsableStageDTO>> response) {
+                        populateListView(response.body());
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<ResponsableStageDTO>> call, Throwable t) {
+                        Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+
+    private void populateListView(List<ResponsableStageDTO> responsableStageDTOList) {
+        RespoAdapter respoAdapter = new RespoAdapter(responsableStageDTOList);
+        recyclerView.setAdapter(respoAdapter);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadEmployees();
     }
 
     void loadFragment(Fragment fragment) {

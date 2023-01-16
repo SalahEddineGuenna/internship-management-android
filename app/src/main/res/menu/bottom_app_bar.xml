@@ -7,10 +7,17 @@
         android:icon="@drawable/dashbord"
         app:showAsAction="ifRoom"/>
     <item
-        android:title="Users"
+        android:title="Meetings"
         android:id="@+id/users"
-        android:icon="@drawable/ic_baseline_person_24"
+        android:icon="@drawable/baseline_videocam_24"
         app:showAsAction="ifRoom"/>
+
+    <item
+        android:title="Etablissmeents"
+        android:id="@+id/etabs"
+        android:icon="@drawable/baseline_home_work_24"
+        app:showAsAction="ifRoom"/>
+
     <item
         android:title="Profile"
         android:id="@+id/profile"

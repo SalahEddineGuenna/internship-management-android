@@ -28,8 +28,11 @@ public class ActivityHome extends AppCompatActivity implements BottomNavigationV
             case R.id.dashbord:
                 fragment = new DashbordFragment();
                 break;
+            case R.id.etabs:
+                fragment = new EtabFragment();
+                break;
             case R.id.users:
-                fragment = new UsersFragment();
+                fragment = new MeetingsFragment();
                 break;
             case R.id.profile:
                 fragment = new ProfileFragment();
@@ -43,6 +46,6 @@ public class ActivityHome extends AppCompatActivity implements BottomNavigationV
 
     void loadFragment(Fragment fragment) {
         //to attach fragment
-        getSupportFragmentManager().beginTransaction().replace(R.id.relativelayout, fragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.flFragment, fragment).commit();
     }
 }

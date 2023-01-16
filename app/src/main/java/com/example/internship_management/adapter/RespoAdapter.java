@@ -8,16 +8,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.internship_management.R;
+import com.example.internship_management.model.ResponsableStageDTO;
 import com.example.internship_management.model.Student;
 
 import java.util.List;
 
-public class StudentAdapter extends RecyclerView.Adapter<StudentHolder>{
+public class RespoAdapter extends RecyclerView.Adapter<StudentHolder>{
 
-    private List<Student> studentList;
+    private List<ResponsableStageDTO> responsableStageDTOList;
 
-    public StudentAdapter(List<Student> studentList) {
-        this.studentList = studentList;
+    public RespoAdapter(List<ResponsableStageDTO> responsableStageDTOList) {
+        this.responsableStageDTOList = responsableStageDTOList;
     }
 
     @NonNull
@@ -30,14 +31,14 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull StudentHolder holder, int position) {
-        Student student = studentList.get(position);
+        ResponsableStageDTO student = responsableStageDTOList.get(position);
         holder.name.setText(student.getName());
         holder.phone.setText(student.getPhoneNumber());
-        holder.niveau.setText(student.getNiveau());
+        holder.niveau.setText(student.getEtablissementDTOS().getName());
     }
 
     @Override
     public int getItemCount() {
-        return studentList.size();
+        return responsableStageDTOList.size();
     }
 }
