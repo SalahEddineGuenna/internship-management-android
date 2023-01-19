@@ -7,16 +7,24 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.internship_management.enums.Role;
 import com.example.internship_management.model.EtablissementDTO;
+import com.example.internship_management.model.ResponsableStageDTO;
 import com.example.internship_management.model.Student;
 import com.example.internship_management.retrofit.EtablissementApi;
+import com.example.internship_management.retrofit.ResponsableApi;
 import com.example.internship_management.retrofit.RetrofitService;
 import com.example.internship_management.retrofit.StudentApi;
 import com.google.android.material.textfield.TextInputEditText;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,6 +38,8 @@ import retrofit2.Response;
 public class AddEtabFragment extends Fragment {
 
     private TextInputEditText etabname;
+
+    ResponsableStageDTO responsableStageDTO;
     private Button confirm;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -80,6 +90,44 @@ public class AddEtabFragment extends Fragment {
 
         etabname = view.findViewById(R.id.etfetab);
         confirm = view.findViewById(R.id.bconfirm);
+        final Spinner spinner = (Spinner) view.findViewById(R.id.etab);
+
+        RetrofitService retrofitServiceetab = new RetrofitService();
+        ResponsableApi responsableApi = retrofitServiceetab
+                .getRetrofit().create(ResponsableApi.class);
+        responsableApi.getallRsponsables()
+                .enqueue(new Callback<List<ResponsableStageDTO>>() {
+                    @Override
+                    public void onResponse(Call<List<ResponsableStageDTO>> call, Response<List<ResponsableStageDTO>> response) {
+                        if (response.isSuccessful()) {
+                            List<ResponsableStageDTO> data = response.body();
+                            ArrayList<String> names = new ArrayList<>();
+                            for(ResponsableStageDTO item: data){
+                                names.add(item.getName());
+                            }
+                            ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, names);
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            spinner.setAdapter(adapter);
+                            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                    // Get the selected item information here
+                                    responsableStageDTO = data.get(position);
+                                }
+
+                                @Override
+                                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                                }
+                            });
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<List<ResponsableStageDTO>> call, Throwable t) {
+                        // handle failure
+                        Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
 
         RetrofitService retrofitService = new RetrofitService();
         EtablissementApi etablissementApi = retrofitService.getRetrofit().create(EtablissementApi.class);

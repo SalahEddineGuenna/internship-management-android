@@ -17,4 +17,7 @@ public interface ReunionApi {
 
     @POST("/reunions/")
     Call<ReunionDTO> save(@Body ReunionDTO reunionDTO);
+
+    @GET("/reunions/prof/{id}")
+    Call<List<ReunionDTO>> getReunionByIProfId(Long id);
 }

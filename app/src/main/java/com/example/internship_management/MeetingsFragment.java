@@ -9,19 +9,33 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.Spinner;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.internship_management.enums.Role;
 import com.example.internship_management.model.ProfesseurDTO;
 import com.example.internship_management.model.ResponsableStageDTO;
+import com.example.internship_management.model.ReunionDTO;
 import com.example.internship_management.model.Student;
 import com.example.internship_management.retrofit.ProfesseurApi;
 import com.example.internship_management.retrofit.ResponsableApi;
 import com.example.internship_management.retrofit.RetrofitService;
+import com.example.internship_management.retrofit.ReunionApi;
 import com.example.internship_management.retrofit.StudentApi;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import retrofit2.Call;
@@ -34,6 +48,11 @@ import retrofit2.Response;
  * create an instance of this fragment.
  */
 public class MeetingsFragment extends Fragment {
+
+    Button confirm;
+    Student item;
+    ProfesseurDTO professuer;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -85,7 +104,7 @@ public class MeetingsFragment extends Fragment {
 
         final Spinner etudiants = (Spinner) view.findViewById(R.id.spinner);
 
-        final Spinner respo = (Spinner) view.findViewById(R.id.spinner1);
+        final Spinner prof = (Spinner) view.findViewById(R.id.spinner1);
 
 
         // make the network request to the server
@@ -109,9 +128,8 @@ public class MeetingsFragment extends Fragment {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                             // Get the selected item information here
-                            long selectedItem = adapter.getItemId(position);
+                            item = data.get(position);
                             //Student selectedModel = gson.fromJson(selectedItem, Student.class);
-                            System.out.println(selectedItem);
                             //Student selectedModel = gson.fromJson(selectedItem, Student.class);
                             //Toast.makeText(getContext(), selectedItem.toString(), Toast.LENGTH_SHORT).show();
                         }
@@ -149,8 +167,24 @@ public class MeetingsFragment extends Fragment {
                             }
                             ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, names);
                             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            respo.setAdapter(adapter);
+                            prof.setAdapter(adapter);
+                            prof.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                    // Get the selected item information here
+                                    professuer = data.get(position);
+                                }
+
+                                @Override
+                                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                                }
+                            });
+
+                        } else {
+                            // handle error case
                         }
+
                     }
 
                     @Override
@@ -159,6 +193,46 @@ public class MeetingsFragment extends Fragment {
                     }
 
                     });
+
+        DatePicker datePicker = (DatePicker) view.findViewById(R.id.datePicker);
+
+
+        TimePicker timePicker = (TimePicker) view.findViewById(R.id.timepicker);
+        timePicker.setIs24HourView(true);
+
+
+        confirm = view.findViewById(R.id.bconfirm);
+
+        ReunionApi reunionApi = retrofitService.getRetrofit().create(ReunionApi.class);
+        confirm.setOnClickListener(view1 -> {
+
+            int day = datePicker.getDayOfMonth();
+            int month = datePicker.getMonth() + 1;
+            int year = datePicker.getYear();
+
+            int hour = timePicker.getHour();
+            int minute = timePicker.getMinute();
+
+            String date = year + "-" + month + "-" + day + " " + hour + ":" + minute + ":00.0000";
+
+            System.out.println(date);
+            ReunionDTO reunion = new ReunionDTO();
+            reunion.setDateReunion(date);
+            reunion.setEtudiantDTO(item);
+            reunion.setProfesseurDTO(professuer);
+            reunionApi.save(reunion)
+                    .enqueue(new Callback<ReunionDTO>() {
+                        @Override
+                        public void onResponse(Call<ReunionDTO> call, Response<ReunionDTO> response) {
+                            Toast.makeText(getContext(), "Save successful!", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onFailure(Call<ReunionDTO> call, Throwable t) {
+                            Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        });
 
 
         return view;

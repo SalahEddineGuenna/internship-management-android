@@ -29,7 +29,7 @@
             android:layout_width="252dp"
             android:layout_height="161dp"
             android:timePickerMode="spinner"
-            app:layout_constraintBottom_toTopOf="@+id/bRegister"
+            app:layout_constraintBottom_toTopOf="@+id/bconfirm"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.503"
             app:layout_constraintStart_toStartOf="parent"
@@ -79,7 +79,7 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/bRegister"
+            android:id="@+id/bconfirm"
             android:layout_width="377dp"
             android:layout_height="44dp"
             android:layout_marginBottom="16dp"

@@ -4,15 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".RespoFragment"
-    android:id="@+id/frag">
+    tools:context=".StudentMeetingFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/respo_recyclerView"
+            android:id="@+id/employeeList_recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

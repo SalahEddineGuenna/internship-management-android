@@ -4,7 +4,16 @@ package com.example.internship_management.model;
 public class EtablissementDTO {
     private Long id;
     private String name;
+    private ResponsableStageDTO responsableStage;
     //private List<EtudiantDTO> etudiantDTOList;
+
+    public ResponsableStageDTO getResponsableStageDTO() {
+        return responsableStage;
+    }
+
+    public void setResponsableStageDTO(ResponsableStageDTO responsableStage) {
+        this.responsableStage = responsableStage;
+    }
 
     public Long getId() {
         return id;

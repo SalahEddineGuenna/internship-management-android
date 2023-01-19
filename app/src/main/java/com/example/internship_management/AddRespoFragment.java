@@ -1,6 +1,5 @@
 package com.example.internship_management;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -16,16 +15,16 @@ import android.widget.Toast;
 
 import com.example.internship_management.enums.Role;
 import com.example.internship_management.model.EtablissementDTO;
+import com.example.internship_management.model.ResponsableStageDTO;
 import com.example.internship_management.model.Student;
 import com.example.internship_management.retrofit.EtablissementApi;
+import com.example.internship_management.retrofit.ResponsableApi;
 import com.example.internship_management.retrofit.RetrofitService;
 import com.example.internship_management.retrofit.StudentApi;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,15 +32,17 @@ import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link AddStudentFragment#newInstance} factory method to
+ * Use the {@link AddRespoFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddStudentFragment extends Fragment {
+public class AddRespoFragment extends Fragment {
 
-    private TextInputEditText fname, lname, mail, phone, niveau, password, etab, username;
+    private TextInputEditText fname, lname, mail, phone, user, password;
     private Button confirm;
 
-    private EtablissementDTO etablissementDTO;
+    EtablissementDTO etablissementDTO = new EtablissementDTO();
+
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -51,7 +52,7 @@ public class AddStudentFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public AddStudentFragment() {
+    public AddRespoFragment() {
         // Required empty public constructor
     }
 
@@ -61,11 +62,11 @@ public class AddStudentFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment AddStudentFragment.
+     * @return A new instance of fragment AddRespoFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AddStudentFragment newInstance(String param1, String param2) {
-        AddStudentFragment fragment = new AddStudentFragment();
+    public static AddRespoFragment newInstance(String param1, String param2) {
+        AddRespoFragment fragment = new AddRespoFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -82,21 +83,21 @@ public class AddStudentFragment extends Fragment {
         }
     }
 
-    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_add_student, container, false);
+        View view = inflater.inflate(R.layout.fragment_add_respo, container, false);
+
+        final Spinner spinner = (Spinner) view.findViewById(R.id.spinner1);
+
         fname = view.findViewById(R.id.etfirst);
         lname = view.findViewById(R.id.etlast);
         phone = view.findViewById(R.id.etphone);
         mail = view.findViewById(R.id.etMail);
         password = view.findViewById(R.id.etPassword);
-        niveau = view.findViewById(R.id.etniveau);
         confirm = view.findViewById(R.id.bconfirm);
-        final Spinner spinner = (Spinner) view.findViewById(R.id.etab);
-        username = view.findViewById(R.id.etuser);
+        user = view.findViewById(R.id.etuser);
 
         RetrofitService retrofitServiceetab = new RetrofitService();
         EtablissementApi etablissementApi = retrofitServiceetab
@@ -135,41 +136,41 @@ public class AddStudentFragment extends Fragment {
                     }
                 });
 
+
         RetrofitService retrofitService = new RetrofitService();
-        StudentApi studentApi = retrofitService.getRetrofit().create(StudentApi.class);
+        ResponsableApi responsableApi = retrofitService.getRetrofit().create(ResponsableApi.class);
         confirm.setOnClickListener(view1 -> {
             String first = String.valueOf(fname.getText());
             String last = String.valueOf(lname.getText());
             String number = String.valueOf(phone.getText());
             String email = String.valueOf(mail.getText());
-            String niv = String.valueOf(niveau.getText());
             String pass = String.valueOf(password.getText());
-            String user = String.valueOf(username.getText());
+            String username = String.valueOf(user.getText());
 
-            Student student = new Student();
-            student.setEmail(email);
-            student.setLastName(last);
-            student.setName(first);
-            student.setPhoneNumber(number);
-            student.setNiveau(niv);
-            student.setPassword(pass);
-            student.setRole(Role.ETUDIANT);
-            student.setUsername(user);
-            student.setEtablissement(etablissementDTO);
+            ResponsableStageDTO responsable = new ResponsableStageDTO();
+            responsable.setEmail(email);
+            responsable.setLastName(last);
+            responsable.setName(first);
+            responsable.setPhoneNumber(number);
+            responsable.setPassword(pass);
+            responsable.setRole(Role.RESPONSABLE);
+            responsable.setUsername(username);
+            responsable.setEtablissementDTOS(etablissementDTO);
 
-            studentApi.save(student)
-                    .enqueue(new Callback<Student>() {
+            responsableApi.save(responsable)
+                    .enqueue(new Callback<ResponsableStageDTO>() {
                         @Override
-                        public void onResponse(Call<Student> call, Response<Student> response) {
+                        public void onResponse(Call<ResponsableStageDTO> call, Response<ResponsableStageDTO> response) {
                             Toast.makeText(getContext(), "Save successful!", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
-                        public void onFailure(Call<Student> call, Throwable t) {
+                        public void onFailure(Call<ResponsableStageDTO> call, Throwable t) {
                             Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
         });
+
         return view;
     }
 }

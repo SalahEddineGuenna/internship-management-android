@@ -15,6 +15,7 @@ import java.util.List;
 public class StudentAdapter extends RecyclerView.Adapter<StudentHolder>{
 
     private List<Student> studentList;
+    private OnItemDeleteListener onItemDeleteListener;
 
     public StudentAdapter(List<Student> studentList) {
         this.studentList = studentList;
@@ -31,9 +32,23 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentHolder>{
     @Override
     public void onBindViewHolder(@NonNull StudentHolder holder, int position) {
         Student student = studentList.get(position);
+        holder.id = student.getId();
         holder.name.setText(student.getName());
         holder.phone.setText(student.getPhoneNumber());
         holder.niveau.setText(student.getNiveau());
+        holder.delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(onItemDeleteListener != null){
+                    onItemDeleteListener.onItemDelete(position);
+                }
+            }
+        });
+
+    }
+
+    public void setOnItemDeleteListener(OnItemDeleteListener listener) {
+        onItemDeleteListener = listener;
     }
 
     @Override

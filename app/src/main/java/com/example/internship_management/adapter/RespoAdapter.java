@@ -34,7 +34,7 @@ public class RespoAdapter extends RecyclerView.Adapter<StudentHolder>{
         ResponsableStageDTO student = responsableStageDTOList.get(position);
         holder.name.setText(student.getName());
         holder.phone.setText(student.getPhoneNumber());
-        holder.niveau.setText(student.getEtablissementDTOS().getName());
+        //holder.niveau.setText(student.getEtablissementDTOS().getName());
     }
 
     @Override

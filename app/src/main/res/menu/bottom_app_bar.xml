@@ -19,6 +19,12 @@
         app:showAsAction="ifRoom"/>
 
     <item
+        android:title="Responsables"
+        android:id="@+id/respos"
+        android:icon="@drawable/ic_baseline_person_24"
+        app:showAsAction="ifRoom"/>
+
+    <item
         android:title="Profile"
         android:id="@+id/profile"
         android:icon="@drawable/profile"

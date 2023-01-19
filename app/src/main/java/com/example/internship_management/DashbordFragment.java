@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.internship_management.adapter.OnItemDeleteListener;
 import com.example.internship_management.adapter.StudentAdapter;
 import com.example.internship_management.model.Student;
 import com.example.internship_management.retrofit.RetrofitService;
@@ -94,6 +95,31 @@ public class DashbordFragment extends Fragment {
     private void populateListView(List<Student> studentList) {
         StudentAdapter studentAdapter = new StudentAdapter(studentList);
         recyclerView.setAdapter(studentAdapter);
+        studentAdapter.setOnItemDeleteListener(new OnItemDeleteListener() {
+            @Override
+            public void onItemDelete(int position) {
+                Student  item = studentList.get(position);
+                Long id = item.getId();
+                RetrofitService retrofitService = new RetrofitService();
+                StudentApi studentApi = retrofitService.getRetrofit().create(StudentApi.class);
+                studentApi.delete(id)
+                        .enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                if(response.isSuccessful()){
+                                    studentList.remove(position);
+                                    studentAdapter.notifyItemRemoved(position);
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+                                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+            }
+        });
     }
 
     @Override

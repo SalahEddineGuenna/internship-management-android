@@ -31,6 +31,21 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Respos:" />
+
+        <Spinner
+            android:id="@+id/etab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:startIconDrawable="@drawable/baseline_home_work_24"
+            android:layout_marginTop="20dp">
+
+        </Spinner>
+
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

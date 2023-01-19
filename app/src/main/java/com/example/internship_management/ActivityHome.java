@@ -37,6 +37,9 @@ public class ActivityHome extends AppCompatActivity implements BottomNavigationV
             case R.id.profile:
                 fragment = new ProfileFragment();
                 break;
+            case R.id.respos:
+                fragment = new RespoFragment();
+                break;
         }
         if (fragment != null) {
             loadFragment(fragment);

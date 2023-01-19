@@ -10,6 +10,15 @@ public class Student extends UtilisateurDTO {
     private List<DocumentDTO> documents;
     private ProfesseurDTO encadrant;
     private EtablissementDTO etablissement;
+    private ReunionDTO reunion;
+
+    public ReunionDTO getReunionDTO() {
+        return reunion;
+    }
+
+    public void setReunionDTO(ReunionDTO reunion) {
+        this.reunion = reunion;
+    }
 
     public String getNiveau() {
         return niveau;
