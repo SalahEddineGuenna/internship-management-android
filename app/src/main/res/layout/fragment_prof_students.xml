@@ -3,9 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".RespoFragment"
-    android:id="@+id/frag"
+    tools:context=".ProfStudentsFragment"
     android:background="?android:attr/colorBackground">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -13,20 +11,9 @@
         android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/respo_recyclerView"
+            android:id="@+id/studentslist"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/employeeList_fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:src="@android:drawable/ic_input_add"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:contentDescription="Add Student" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

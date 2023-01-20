@@ -11,15 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.internship_management.adapter.EtudiantAdapter;
 import com.example.internship_management.adapter.OnItemDeleteListener;
-import com.example.internship_management.adapter.ReunionAdapter;
 import com.example.internship_management.adapter.StudentAdapter;
-import com.example.internship_management.model.ReunionDTO;
 import com.example.internship_management.model.Student;
 import com.example.internship_management.retrofit.RetrofitService;
-import com.example.internship_management.retrofit.ReunionApi;
 import com.example.internship_management.retrofit.StudentApi;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
@@ -29,13 +26,14 @@ import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link StudentMeetingFragment#newInstance} factory method to
+ * Use the {@link ProfStudentsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class StudentMeetingFragment extends Fragment {
+public class ProfStudentsFragment extends Fragment {
+
+    private RecyclerView recyclerView;
 
     Long id;
-    private RecyclerView recyclerView;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -46,7 +44,7 @@ public class StudentMeetingFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public StudentMeetingFragment() {
+    public ProfStudentsFragment() {
         // Required empty public constructor
     }
 
@@ -56,11 +54,11 @@ public class StudentMeetingFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment StudentMeetingFragment.
+     * @return A new instance of fragment ProfStudentsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static StudentMeetingFragment newInstance(String param1, String param2) {
-        StudentMeetingFragment fragment = new StudentMeetingFragment();
+    public static ProfStudentsFragment newInstance(String param1, String param2) {
+        ProfStudentsFragment fragment = new ProfStudentsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -76,49 +74,46 @@ public class StudentMeetingFragment extends Fragment {
         }
     }
 
-    private void loadEmployees(Long id) {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_prof_students, container, false);
+
+        recyclerView = view.findViewById(R.id.studentslist);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        return view;
+    }
+
+
+    private void loadStudents(Long id) {
         RetrofitService retrofitService = new RetrofitService();
-        ReunionApi reunionApi = retrofitService.getRetrofit().create(ReunionApi.class);
-        reunionApi.getReunionByIStudentId(id)
-                .enqueue(new Callback<List<ReunionDTO>>() {
+        StudentApi studentApi = retrofitService.getRetrofit().create(StudentApi.class);
+        studentApi.getByProf(id)
+                .enqueue(new Callback<List<Student>>() {
                     @Override
-                    public void onResponse(Call<List<ReunionDTO>> call, Response<List<ReunionDTO>> response) {
+                    public void onResponse(Call<List<Student>> call, Response<List<Student>> response) {
                         populateListView(response.body());
                     }
 
                     @Override
-                    public void onFailure(Call<List<ReunionDTO>> call, Throwable t) {
+                    public void onFailure(Call<List<Student>> call, Throwable t) {
                         Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
 
-    private void populateListView(List<ReunionDTO> reunionList) {
-        for(int i = 0; i < reunionList.size()/2; i++)
-        {
-            ReunionDTO temp = reunionList.get(i);
-            reunionList.set(i, reunionList.get(reunionList.size()-i-1));
-            reunionList.set(reunionList.size()-i-1, temp);
-        }
-        ReunionAdapter reunionAdapter = new ReunionAdapter(reunionList);
-        recyclerView.setAdapter(reunionAdapter);
+    private void populateListView(List<Student> studentList) {
+        EtudiantAdapter etudiantAdapter = new EtudiantAdapter(studentList);
+        recyclerView.setAdapter(etudiantAdapter);
+
     }
-
-
-
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_student_meeting, container, false);
-        recyclerView = view.findViewById(R.id.meetings);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        loadEmployees(id);
-
-        return view;
+    public void onResume() {
+        super.onResume();
+        loadStudents(id);
     }
-
 }

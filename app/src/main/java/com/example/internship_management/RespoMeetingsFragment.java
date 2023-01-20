@@ -11,14 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.internship_management.adapter.OnItemDeleteListener;
 import com.example.internship_management.adapter.ReunionAdapter;
-import com.example.internship_management.adapter.StudentAdapter;
 import com.example.internship_management.model.ReunionDTO;
-import com.example.internship_management.model.Student;
 import com.example.internship_management.retrofit.RetrofitService;
 import com.example.internship_management.retrofit.ReunionApi;
-import com.example.internship_management.retrofit.StudentApi;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -29,14 +25,13 @@ import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link StudentMeetingFragment#newInstance} factory method to
+ * Use the {@link RespoMeetingsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class StudentMeetingFragment extends Fragment {
+public class RespoMeetingsFragment extends Fragment {
 
-    Long id;
     private RecyclerView recyclerView;
-
+    private FloatingActionButton add;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -46,7 +41,7 @@ public class StudentMeetingFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public StudentMeetingFragment() {
+    public RespoMeetingsFragment() {
         // Required empty public constructor
     }
 
@@ -56,11 +51,11 @@ public class StudentMeetingFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment StudentMeetingFragment.
+     * @return A new instance of fragment RespoMeetingsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static StudentMeetingFragment newInstance(String param1, String param2) {
-        StudentMeetingFragment fragment = new StudentMeetingFragment();
+    public static RespoMeetingsFragment newInstance(String param1, String param2) {
+        RespoMeetingsFragment fragment = new RespoMeetingsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -72,14 +67,35 @@ public class StudentMeetingFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            id = getArguments().getLong("id");
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
-    private void loadEmployees(Long id) {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view =  inflater.inflate(R.layout.fragment_respo_meetings, container, false);
+        recyclerView = view.findViewById(R.id.meetings);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        add = view.findViewById(R.id.meeting_fab);
+
+        loadMeetings();
+
+        add.setOnClickListener(View -> {
+            Fragment fragment = new MeetingsFragment();
+            loadFragment(fragment);
+
+        });
+        return view;
+    }
+
+    private void loadMeetings() {
         RetrofitService retrofitService = new RetrofitService();
         ReunionApi reunionApi = retrofitService.getRetrofit().create(ReunionApi.class);
-        reunionApi.getReunionByIStudentId(id)
+        reunionApi.getReunionByID()
                 .enqueue(new Callback<List<ReunionDTO>>() {
                     @Override
                     public void onResponse(Call<List<ReunionDTO>> call, Response<List<ReunionDTO>> response) {
@@ -93,7 +109,6 @@ public class StudentMeetingFragment extends Fragment {
                 });
     }
 
-
     private void populateListView(List<ReunionDTO> reunionList) {
         for(int i = 0; i < reunionList.size()/2; i++)
         {
@@ -105,20 +120,8 @@ public class StudentMeetingFragment extends Fragment {
         recyclerView.setAdapter(reunionAdapter);
     }
 
-
-
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_student_meeting, container, false);
-        recyclerView = view.findViewById(R.id.meetings);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        loadEmployees(id);
-
-        return view;
+    void loadFragment(Fragment fragment) {
+        //to attach fragment
+        getFragmentManager().beginTransaction().replace(R.id.frag, fragment).commit();
     }
-
 }

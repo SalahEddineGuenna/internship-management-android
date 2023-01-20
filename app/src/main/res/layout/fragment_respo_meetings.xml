@@ -4,22 +4,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".RespoFragment"
-    android:id="@+id/frag"
-    android:background="?android:attr/colorBackground">
+    tools:context=".RespoMeetingsFragment"
+    android:background="?android:attr/colorBackground"
+    android:id="@+id/frag">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/respo_recyclerView"
+            android:id="@+id/meetings"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/employeeList_fab"
+            android:id="@+id/meeting_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"

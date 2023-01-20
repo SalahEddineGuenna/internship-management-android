@@ -17,6 +17,8 @@ public interface ProfesseurApi {
 
     @GET("/professeurs/")
     Call<List<ProfesseurDTO>> getAllprofesseurs();
+    @GET("/professeurs/{id}")
+    Call<ProfesseurDTO> getById(@Path("id") Long id);
 
     @GET("/professeurs/user/{username}")
     Call<ProfesseurDTO> getByUsername(@Path("username") String username);
@@ -24,6 +26,6 @@ public interface ProfesseurApi {
     @POST("/professeurs/")
     Call<ProfesseurDTO> save(@Body ProfesseurDTO professeurDTO);
 
-    @PUT("/professeurs/")
-    Call<ProfesseurDTO> update(@Body ProfesseurDTO professeurDTO);
+    @PUT("/professeurs/{id}")
+    Call<ProfesseurDTO> update(@Path("id") Long id,@Body ProfesseurDTO professeurDTO);
 }

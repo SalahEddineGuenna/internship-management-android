@@ -19,14 +19,20 @@ public interface StudentApi {
     @GET("/etudiants/")
     Call<List<Student>> getAllStudents();
 
+    @GET("/etudiants/{id}")
+    Call<Student> getById(@Path("id") Long id);
+
     @GET("/etudiants/user/{username}")
     Call<Student> getByUsername(@Path("username") String username);
+
+    @GET("/etudiants/prof/{id}")
+    Call<List<Student>> getByProf(@Path("id") Long id);
 
     @POST("/etudiants/")
     Call<Student> save(@Body Student student);
 
-    @PUT("/etudiants/")
-    Call<Student> update(@Body Student student);
+    @PUT("/etudiants/{id}")
+    Call<Student> update(@Path("id") Long id, @Body Student student);
 
     @DELETE("/etudiants/{id}")
     Call<Void> delete(@Path("id") Long id);

@@ -9,6 +9,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface ReunionApi {
 
@@ -19,5 +20,8 @@ public interface ReunionApi {
     Call<ReunionDTO> save(@Body ReunionDTO reunionDTO);
 
     @GET("/reunions/prof/{id}")
-    Call<List<ReunionDTO>> getReunionByIProfId(Long id);
+    Call<List<ReunionDTO>> getReunionByIProfId(@Path("id") Long id);
+
+    @GET("/reunions/user/{id}")
+    Call<List<ReunionDTO>> getReunionByIStudentId(@Path("id") Long id);
 }

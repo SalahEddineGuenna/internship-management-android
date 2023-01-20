@@ -141,6 +141,7 @@ public class AddEtabFragment extends Fragment {
                         @Override
                         public void onResponse(Call<EtablissementDTO> call, Response<EtablissementDTO> response) {
                             Toast.makeText(getContext(), "Save successful!", Toast.LENGTH_SHORT).show();
+
                         }
 
                         @Override

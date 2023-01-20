@@ -184,7 +184,6 @@ public class MeetingsFragment extends Fragment {
                         } else {
                             // handle error case
                         }
-
                     }
 
                     @Override
@@ -213,7 +212,7 @@ public class MeetingsFragment extends Fragment {
             int hour = timePicker.getHour();
             int minute = timePicker.getMinute();
 
-            String date = year + "-" + month + "-" + day + " " + hour + ":" + minute + ":00.0000";
+            String date = year + "-" + month + "-" + day + " " + hour + ":" + minute;
 
             System.out.println(date);
             ReunionDTO reunion = new ReunionDTO();
@@ -225,6 +224,7 @@ public class MeetingsFragment extends Fragment {
                         @Override
                         public void onResponse(Call<ReunionDTO> call, Response<ReunionDTO> response) {
                             Toast.makeText(getContext(), "Save successful!", Toast.LENGTH_SHORT).show();
+
                         }
 
                         @Override

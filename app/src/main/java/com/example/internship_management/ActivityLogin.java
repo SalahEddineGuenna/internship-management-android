@@ -95,10 +95,8 @@ public class ActivityLogin extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<Student> call, Response<Student> response) {
                         if(checkStudent(pass, response.body())) {
-                            //Bundle bundle = new Bundle();
-                            //bundle.putSerializable("student", (Serializable) response.body());
-                            Intent intent = new Intent(ActivityLogin.this, ActivityHome.class);
-                            //intent.putExtras("student", response.body());
+                            Intent intent = new Intent(ActivityLogin.this, StudentHomeActivity.class);
+                            intent.putExtra("id", response.body().getId());
                             startActivity(intent);
                         } else {
                             Toast.makeText(ActivityLogin.this, "Wrong Password!", Toast.LENGTH_SHORT).show();
@@ -131,10 +129,8 @@ public class ActivityLogin extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<ProfesseurDTO> call, Response<ProfesseurDTO> response) {
                         if(checkProf(pass, response.body())) {
-                            //Bundle bundle = new Bundle();
-                            //bundle.putSerializable("student", (Serializable) response.body());
-                            Intent intent = new Intent(ActivityLogin.this, ActivityHome.class);
-                            //intent.putExtras(bundle);
+                            Intent intent = new Intent(ActivityLogin.this, ProfHomeActivity.class);
+                            intent.putExtra("id", response.body().getId());
                             startActivity(intent);
                         } else {
                             Toast.makeText(ActivityLogin.this, "Wrong Password!", Toast.LENGTH_SHORT).show();
@@ -169,10 +165,8 @@ public class ActivityLogin extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<ResponsableStageDTO> call, Response<ResponsableStageDTO> response) {
                         if(checkRespo(pass, response.body())) {
-                            //Bundle bundle = new Bundle();
-                            //bundle.putSerializable("student", (Serializable) response.body());
-                            Intent intent = new Intent(ActivityLogin.this, ActivityHome.class);
-                            //intent.putExtras(bundle);
+                            Intent intent = new Intent(ActivityLogin.this, RespoHomeActivity.class);
+                            intent.putExtra("id", response.body().getId());
                             startActivity(intent);
                         } else {
                             Toast.makeText(ActivityLogin.this, "Wrong Password!", Toast.LENGTH_SHORT).show();
