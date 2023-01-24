@@ -11,7 +11,7 @@ import com.example.internship_management.R;
 
 public class EtudiantHolder extends RecyclerView.ViewHolder {
 
-    TextView name, phone, niveau;
+    TextView name, phone, niveau, prof, etab;
 
     public EtudiantHolder(@NonNull View itemView) {
         super(itemView);

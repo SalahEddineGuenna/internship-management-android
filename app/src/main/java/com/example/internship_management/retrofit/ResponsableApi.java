@@ -17,12 +17,15 @@ public interface ResponsableApi {
     @GET("/responsables/")
     Call<List<ResponsableStageDTO>> getallRsponsables();
 
+    @GET("/responsables/{id}")
+    Call<ResponsableStageDTO> getById(@Path("id") Long id);
+
     @GET("/responsables/user/{username}")
     Call<ResponsableStageDTO> getByUsername(@Path("username") String username);
 
     @POST("/responsables/")
     Call<ResponsableStageDTO> save(@Body ResponsableStageDTO responsableStageDTO);
 
-    @PUT("/responsables/")
-    Call<ResponsableStageDTO> update(@Body ResponsableStageDTO responsableStageDTO);
+    @PUT("/responsables/{id}")
+    Call<ResponsableStageDTO> update(@Path("id")Long id, @Body ResponsableStageDTO responsableStageDTO);
 }

@@ -26,6 +26,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/blue"
         app:menu="@menu/respo_bottom_app"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

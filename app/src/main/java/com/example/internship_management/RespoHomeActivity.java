@@ -36,7 +36,12 @@ public class RespoHomeActivity extends AppCompatActivity  implements BottomNavig
                 break;
             case R.id.profile:
                 bundle.putLong("id", value);
-                fragment = new StudentProfileFragment();
+                fragment = new RespoProfileFragment();
+                fragment.setArguments(bundle);
+                break;
+            case R.id.etud:
+                bundle.putLong("id", value);
+                fragment = new DashbordFragment();
                 fragment.setArguments(bundle);
                 break;
         }

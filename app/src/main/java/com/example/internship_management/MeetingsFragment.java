@@ -1,5 +1,7 @@
 package com.example.internship_management;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -25,6 +27,7 @@ import com.example.internship_management.retrofit.ResponsableApi;
 import com.example.internship_management.retrofit.RetrofitService;
 import com.example.internship_management.retrofit.ReunionApi;
 import com.example.internship_management.retrofit.StudentApi;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -49,10 +52,12 @@ import retrofit2.Response;
  */
 public class MeetingsFragment extends Fragment {
 
-    Button confirm;
-    Student item;
-    ProfesseurDTO professuer;
-
+    private Button confirm;
+    private Student item;
+    private ProfesseurDTO professuer;
+    private TextInputEditText date, time;
+    private String selectedTime, selectedDate;
+    int year, day, month, hour, minute;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -105,6 +110,7 @@ public class MeetingsFragment extends Fragment {
         final Spinner etudiants = (Spinner) view.findViewById(R.id.spinner);
 
         final Spinner prof = (Spinner) view.findViewById(R.id.spinner1);
+        final Calendar c = Calendar.getInstance();
 
 
         // make the network request to the server
@@ -193,30 +199,77 @@ public class MeetingsFragment extends Fragment {
 
                     });
 
-        DatePicker datePicker = (DatePicker) view.findViewById(R.id.datePicker);
+        //DatePicker datePicker = (DatePicker) view.findViewById(R.id.datePicker);
 
 
-        TimePicker timePicker = (TimePicker) view.findViewById(R.id.timepicker);
-        timePicker.setIs24HourView(true);
+        //TimePicker timePicker = (TimePicker) view.findViewById(R.id.timepicker);
+        //timePicker.setIs24HourView(true);
 
 
         confirm = view.findViewById(R.id.bconfirm);
 
+        date = view.findViewById(R.id.etdate);
+        time = view.findViewById(R.id.etTime);
+
+        date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+
+                // on below line we are getting
+                // our day, month and year.
+                year = c.get(Calendar.YEAR);
+                month = c.get(Calendar.MONTH);
+                day = c.get(Calendar.DAY_OF_MONTH);
+
+                // on below line we are creating a variable for date picker dialog.
+                DatePickerDialog datePickerDialog = new DatePickerDialog(
+                        // on below line we are passing context.
+                        getContext(),
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth) {
+                                // on below line we are setting date to our edit text.
+                                date.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                                selectedDate = date.getText().toString();
+                                //Toast.makeText(getContext(), datetime, Toast.LENGTH_SHORT).show();
+
+                            }
+                        },
+                        // on below line we are passing year,
+                        // month and day for selected date in our date picker.
+                        year, month, day);
+                // at last we are calling show to
+                // display our date picker dialog.
+                datePickerDialog.show();
+            }
+        });
+
+        time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hour = c.get(Calendar.HOUR_OF_DAY);
+                minute = c.get(Calendar.MINUTE);
+
+                TimePickerDialog mTimePicker;
+                mTimePicker = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        time.setText( selectedHour + ":" + selectedMinute);
+                        selectedTime = time.getText().toString();
+                        //Toast.makeText(getContext(), datetime, Toast.LENGTH_SHORT).show();
+                    }
+                }, hour, minute, true);
+                mTimePicker.setTitle("Select Time");
+                mTimePicker.show();
+            }
+        });
+
         ReunionApi reunionApi = retrofitService.getRetrofit().create(ReunionApi.class);
         confirm.setOnClickListener(view1 -> {
-
-            int day = datePicker.getDayOfMonth();
-            int month = datePicker.getMonth() + 1;
-            int year = datePicker.getYear();
-
-            int hour = timePicker.getHour();
-            int minute = timePicker.getMinute();
-
-            String date = year + "-" + month + "-" + day + " " + hour + ":" + minute;
-
-            System.out.println(date);
+            //Toast.makeText(getContext(), selectedDate + " " + selectedTime, Toast.LENGTH_SHORT).show();
             ReunionDTO reunion = new ReunionDTO();
-            reunion.setDateReunion(date);
+            reunion.setDateReunion(selectedDate + " " + selectedTime);
             reunion.setEtudiantDTO(item);
             reunion.setProfesseurDTO(professuer);
             reunionApi.save(reunion)
@@ -233,7 +286,6 @@ public class MeetingsFragment extends Fragment {
                         }
                     });
         });
-
 
         return view;
     }

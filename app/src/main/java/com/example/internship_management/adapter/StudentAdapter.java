@@ -36,19 +36,9 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentHolder>{
         holder.name.setText(student.getName());
         holder.phone.setText(student.getPhoneNumber());
         holder.niveau.setText(student.getNiveau());
-        holder.delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(onItemDeleteListener != null){
-                    onItemDeleteListener.onItemDelete(position);
-                }
-            }
-        });
+        holder.prof.setText(student.getEncadrant().getLastName());
 
-    }
 
-    public void setOnItemDeleteListener(OnItemDeleteListener listener) {
-        onItemDeleteListener = listener;
     }
 
     @Override

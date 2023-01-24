@@ -105,7 +105,7 @@ public class ActivityLogin extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<Student> call, Throwable t) {
-                        Toast.makeText(ActivityLogin.this, "User does not exist!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ActivityLogin.this, t.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }

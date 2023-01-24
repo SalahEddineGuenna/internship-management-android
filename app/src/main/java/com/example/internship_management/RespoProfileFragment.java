@@ -10,8 +10,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.internship_management.enums.Role;
+import com.example.internship_management.model.ResponsableStageDTO;
 import com.example.internship_management.model.Student;
+import com.example.internship_management.retrofit.ResponsableApi;
 import com.example.internship_management.retrofit.RetrofitService;
 import com.example.internship_management.retrofit.StudentApi;
 import com.google.android.material.textfield.TextInputEditText;
@@ -22,15 +23,16 @@ import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link StudentProfileFragment#newInstance} factory method to
+ * Use the {@link RespoProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class StudentProfileFragment extends Fragment {
+public class RespoProfileFragment extends Fragment {
 
-    private TextInputEditText fname, lname, mail, phone, password, etabliss, username, niveau;
+    private TextInputEditText fname, lname, mail, phone, password, etabliss, username;
     private Button update;
     Long id;
-    Student student;
+    ResponsableStageDTO responsable;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -40,7 +42,7 @@ public class StudentProfileFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public StudentProfileFragment() {
+    public RespoProfileFragment() {
         // Required empty public constructor
     }
 
@@ -50,11 +52,11 @@ public class StudentProfileFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment StudentProfileFragment.
+     * @return A new instance of fragment RespoProfileFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static StudentProfileFragment newInstance(String param1, String param2) {
-        StudentProfileFragment fragment = new StudentProfileFragment();
+    public static RespoProfileFragment newInstance(String param1, String param2) {
+        RespoProfileFragment fragment = new RespoProfileFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -68,17 +70,15 @@ public class StudentProfileFragment extends Fragment {
         if (getArguments() != null) {
             id = getArguments().getLong("id");
         }
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_student_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_respo_profile, container, false);
 
-        loadStudent(id);
-
+        loadRespo(id);
         fname = view.findViewById(R.id.etname);
         lname = view.findViewById(R.id.etlast);
         mail = view .findViewById(R.id.etMail);
@@ -86,67 +86,65 @@ public class StudentProfileFragment extends Fragment {
         password = view .findViewById(R.id.etPassword1);
         update = view.findViewById(R.id.bupdate);
         etabliss = view.findViewById(R.id.etabl);
-        niveau = view.findViewById(R.id.etniveau);
         username = view.findViewById(R.id.etuser);
 
         update.setOnClickListener(view1 -> {
-            updateStudent(id);
+            updateRespo(id);
         });
 
         return view;
     }
 
-    private void updateStudent(Long id) {
+    private void updateRespo(Long id) {
         RetrofitService retrofitService = new RetrofitService();
-        StudentApi studentApi = retrofitService.getRetrofit().create(StudentApi.class);
-        student.setEmail(mail.getText().toString());
-        student.setLastName(lname.getText().toString());
-        student.setName(fname.getText().toString());
-        student.setPhoneNumber(phone.getText().toString());
-        student.setPassword(password.getText().toString());
+        ResponsableApi responsableApi = retrofitService.getRetrofit().create(ResponsableApi.class);
+        responsable.setEmail(mail.getText().toString());
+        responsable.setLastName(lname.getText().toString());
+        responsable.setName(fname.getText().toString());
+        responsable.setPhoneNumber(phone.getText().toString());
+        responsable.setPassword(password.getText().toString());
 
-        studentApi.update(id, student)
-                .enqueue(new Callback<Student>() {
+        responsableApi.update(id, responsable)
+                .enqueue(new Callback<ResponsableStageDTO>() {
                     @Override
-                    public void onResponse(Call<Student> call, Response<Student> response) {
+                    public void onResponse(Call<ResponsableStageDTO> call, Response<ResponsableStageDTO> response) {
                         Toast.makeText(getContext(), "Save successful!", Toast.LENGTH_SHORT).show();
 
                     }
 
                     @Override
-                    public void onFailure(Call<Student> call, Throwable t) {
+                    public void onFailure(Call<ResponsableStageDTO> call, Throwable t) {
                         Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
-    private void loadStudent(Long id) {
+    private void loadRespo(Long id) {
         RetrofitService retrofitService = new RetrofitService();
-        StudentApi studentApi = retrofitService.getRetrofit().create(StudentApi.class);
-        studentApi.getById(id)
-                .enqueue(new Callback<Student>() {
+        ResponsableApi responsableApi = retrofitService.getRetrofit().create(ResponsableApi.class);
+        responsableApi.getById(id)
+                .enqueue(new Callback<ResponsableStageDTO>() {
                     @Override
-                    public void onResponse(Call<Student> call, Response<Student> response) {
-                        student = response.body();
-                        populateView(student);
-                        }
+                    public void onResponse(Call<ResponsableStageDTO> call, Response<ResponsableStageDTO> response) {
+                        responsable = response.body();
+                        populateView(responsable);
+                    }
 
                     @Override
-                    public void onFailure(Call<Student> call, Throwable t) {
+                    public void onFailure(Call<ResponsableStageDTO> call, Throwable t) {
                         Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
 
                     }
                 });
     }
 
-    private void populateView(Student student) {
-        fname.setText(student.getName());
-        lname.setText(student.getLastName());
-        mail.setText(student.getEmail());
-        phone.setText(student.getPhoneNumber());
-        password.setText(student.getPassword());
-        username.setText(student.getUsername());
-        niveau.setText(student.getNiveau());
-        etabliss.setText(student.getEtablissement().getName());
+    private void populateView(ResponsableStageDTO responsable) {
+        fname.setText(responsable.getName());
+        lname.setText(responsable.getLastName());
+        mail.setText(responsable.getEmail());
+        phone.setText(responsable.getPhoneNumber());
+        password.setText(responsable.getPassword());
+        username.setText(responsable.getUsername());
+        etabliss.setText(responsable.getEtablissementDTOS().getName());
     }
 }

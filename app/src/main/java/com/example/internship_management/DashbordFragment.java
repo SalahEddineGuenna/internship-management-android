@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.internship_management.adapter.EtudiantAdapter;
 import com.example.internship_management.adapter.OnItemDeleteListener;
 import com.example.internship_management.adapter.StudentAdapter;
 import com.example.internship_management.model.Student;
@@ -95,7 +96,7 @@ public class DashbordFragment extends Fragment {
     private void populateListView(List<Student> studentList) {
         StudentAdapter studentAdapter = new StudentAdapter(studentList);
         recyclerView.setAdapter(studentAdapter);
-        studentAdapter.setOnItemDeleteListener(new OnItemDeleteListener() {
+        /*studentAdapter.setOnItemDeleteListener(new OnItemDeleteListener() {
             @Override
             public void onItemDelete(int position) {
                 Student  item = studentList.get(position);
@@ -120,6 +121,8 @@ public class DashbordFragment extends Fragment {
 
             }
         });
+
+         */
     }
 
     @Override
