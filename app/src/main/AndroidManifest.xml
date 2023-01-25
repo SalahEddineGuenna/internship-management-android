@@ -38,6 +38,8 @@
             android:name=".ActivityLogin"
             android:exported="true">
 
+
+
         </activity>
         <activity
             android:name=".ActivityRegister"

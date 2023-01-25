@@ -1,12 +1,19 @@
 package com.example.internship_management.adapter;
 
+import static com.google.android.material.internal.ContextUtils.getActivity;
+
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.internship_management.ActivityHome;
+import com.example.internship_management.DashbordFragment;
 import com.example.internship_management.R;
 import com.example.internship_management.model.Student;
 
@@ -16,9 +23,11 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentHolder>{
 
     private List<Student> studentList;
     private OnItemDeleteListener onItemDeleteListener;
+    private OnButtonClickListener clickListener;
 
-    public StudentAdapter(List<Student> studentList) {
+    public StudentAdapter(List<Student> studentList, OnButtonClickListener clickListener) {
         this.studentList = studentList;
+        this.clickListener = clickListener;
     }
 
     @NonNull
@@ -36,13 +45,30 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentHolder>{
         holder.name.setText(student.getName());
         holder.phone.setText(student.getPhoneNumber());
         holder.niveau.setText(student.getNiveau());
-        holder.prof.setText(student.getEncadrant().getLastName());
-
-
+        if(student.getEncadrant() == null){
+            holder.prof.setVisibility(View.GONE);
+            holder.affecter.setVisibility(View.VISIBLE);
+            holder.affecter.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    clickListener.onButtonClick(student.getId());
+                }
+            });
+        } else {
+            holder.prof.setVisibility(View.VISIBLE);
+            holder.affecter.setVisibility(View.GONE);
+            ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) holder.view.getLayoutParams();
+            params.topToBottom = R.id.encad; // sets the left to right constraint to the id of other_view
+            holder.view.setLayoutParams(params);
+            holder.prof.setText(student.getEncadrant().getLastName());
+        }
     }
-
     @Override
     public int getItemCount() {
         return studentList.size();
+    }
+
+    public interface OnButtonClickListener {
+        void onButtonClick(Long id);
     }
 }

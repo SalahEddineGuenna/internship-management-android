@@ -30,10 +30,11 @@ import retrofit2.Response;
  * Use the {@link DashbordFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DashbordFragment extends Fragment {
+public class DashbordFragment extends Fragment implements StudentAdapter.OnButtonClickListener {
 
     private RecyclerView recyclerView;
     private FloatingActionButton add;
+    Bundle bundle = new Bundle();
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -94,7 +95,7 @@ public class DashbordFragment extends Fragment {
     }
 
     private void populateListView(List<Student> studentList) {
-        StudentAdapter studentAdapter = new StudentAdapter(studentList);
+        StudentAdapter studentAdapter = new StudentAdapter(studentList, this);
         recyclerView.setAdapter(studentAdapter);
         /*studentAdapter.setOnItemDeleteListener(new OnItemDeleteListener() {
             @Override
@@ -153,5 +154,16 @@ public class DashbordFragment extends Fragment {
     void loadFragment(Fragment fragment) {
         //to attach fragment
         getFragmentManager().beginTransaction().replace(R.id.frag, fragment).commit();
+    }
+
+    @Override
+    public void onButtonClick(Long id) {
+        Fragment fragment = null;
+        bundle.putLong("id", id);
+        fragment = new AffecterFragment();
+        fragment.setArguments(bundle);
+        if (fragment != null){
+            loadFragment(fragment);
+        }
     }
 }

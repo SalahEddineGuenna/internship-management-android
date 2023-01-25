@@ -16,7 +16,7 @@ import retrofit2.http.Path;
 
 public interface StudentApi {
 
-    @GET("/etudiants/")
+    @GET("/etudiants/all")
     Call<List<Student>> getAllStudents();
 
     @GET("/etudiants/{id}")
@@ -28,7 +28,7 @@ public interface StudentApi {
     @GET("/etudiants/prof/{id}")
     Call<List<Student>> getByProf(@Path("id") Long id);
 
-    @POST("/etudiants/")
+    @POST("/etudiants/add/")
     Call<Student> save(@Body Student student);
 
     @PUT("/etudiants/{id}")
