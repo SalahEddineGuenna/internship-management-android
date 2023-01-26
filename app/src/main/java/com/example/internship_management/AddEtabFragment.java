@@ -90,9 +90,9 @@ public class AddEtabFragment extends Fragment {
 
         etabname = view.findViewById(R.id.etfetab);
         confirm = view.findViewById(R.id.bconfirm);
-        final Spinner spinner = (Spinner) view.findViewById(R.id.etab);
+        //final Spinner spinner = (Spinner) view.findViewById(R.id.etab);
 
-        RetrofitService retrofitServiceetab = new RetrofitService();
+        /*RetrofitService retrofitServiceetab = new RetrofitService();
         ResponsableApi responsableApi = retrofitServiceetab
                 .getRetrofit().create(ResponsableApi.class);
         responsableApi.getallRsponsables()
@@ -128,6 +128,8 @@ public class AddEtabFragment extends Fragment {
                         Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
+
+         */
 
         RetrofitService retrofitService = new RetrofitService();
         EtablissementApi etablissementApi = retrofitService.getRetrofit().create(EtablissementApi.class);

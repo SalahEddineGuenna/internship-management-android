@@ -29,7 +29,7 @@ import retrofit2.Response;
  * Use the {@link ProfStudentsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ProfStudentsFragment extends Fragment {
+public class ProfStudentsFragment extends Fragment  implements StudentAdapter.OnButtonClickListener{
 
     private RecyclerView recyclerView;
 
@@ -106,7 +106,7 @@ public class ProfStudentsFragment extends Fragment {
 
 
     private void populateListView(List<Student> studentList) {
-        EtudiantAdapter etudiantAdapter = new EtudiantAdapter(studentList);
+        StudentAdapter etudiantAdapter = new StudentAdapter(studentList, this);
         recyclerView.setAdapter(etudiantAdapter);
 
     }
@@ -115,5 +115,10 @@ public class ProfStudentsFragment extends Fragment {
     public void onResume() {
         super.onResume();
         loadStudents(id);
+    }
+
+    @Override
+    public void onButtonClick(Long id) {
+
     }
 }

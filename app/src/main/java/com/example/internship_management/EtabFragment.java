@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.internship_management.adapter.EtabAdapter;
+import com.example.internship_management.adapter.OnItemDeleteListener;
 import com.example.internship_management.model.EtablissementDTO;
 import com.example.internship_management.retrofit.EtablissementApi;
 import com.example.internship_management.retrofit.RetrofitService;
@@ -28,7 +29,7 @@ import retrofit2.Response;
  * Use the {@link EtabFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EtabFragment extends Fragment {
+public class EtabFragment extends Fragment implements EtabAdapter.OnButtonClickListener{
 
     private RecyclerView recyclerView;
     private FloatingActionButton add;
@@ -120,13 +121,56 @@ public class EtabFragment extends Fragment {
     }
 
     private void populateListView(List<EtablissementDTO> etabList) {
-        EtabAdapter etabAdapter = new EtabAdapter(etabList);
+        EtabAdapter etabAdapter = new EtabAdapter(etabList, this);
         recyclerView.setAdapter(etabAdapter);
+        etabAdapter.setItemDeleteListener(new OnItemDeleteListener() {
+            @Override
+            public void onItemDelete(int position) {
+                EtablissementDTO  item = etabList.get(position);
+                Long id = item.getId();
+                RetrofitService retrofitService = new RetrofitService();
+                EtablissementApi studentApi = retrofitService.getRetrofit().create(EtablissementApi.class);
+                studentApi.delete(id)
+                        .enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                if(response.isSuccessful()){
+                                    etabList.remove(position);
+                                    etabAdapter.notifyItemRemoved(position);
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+                                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+            }
+        });
     }
 
     @Override
     public void onResume() {
         super.onResume();
         loadEtab();
+    }
+
+    @Override
+    public void onButtonClick(Long id) {
+        RetrofitService retrofitService = new RetrofitService();
+        EtablissementApi etablissementApi = retrofitService.getRetrofit().create(EtablissementApi.class);
+        etablissementApi.delete(id)
+                .enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+
+                    }
+                });
     }
 }

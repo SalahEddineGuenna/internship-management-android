@@ -170,6 +170,24 @@ public class AddRespoFragment extends Fragment {
                             Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
+
+            /*etablissementDTO.setResponsableStageDTO(responsable);
+
+            etablissementApi.update(etablissementDTO.getId(), etablissementDTO)
+                    .enqueue(new Callback<EtablissementDTO>() {
+                        @Override
+                        public void onResponse(Call<EtablissementDTO> call, Response<EtablissementDTO> response) {
+                            Toast.makeText(getContext(), "Save successful!", Toast.LENGTH_SHORT).show();
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<EtablissementDTO> call, Throwable t) {
+                            Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+             */
         });
 
         return view;

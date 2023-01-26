@@ -41,7 +41,7 @@ public class RespoHomeActivity extends AppCompatActivity  implements BottomNavig
                 break;
             case R.id.etud:
                 bundle.putLong("id", value);
-                fragment = new DashbordFragment();
+                fragment = new RespoDashboardFragment();
                 fragment.setArguments(bundle);
                 break;
         }

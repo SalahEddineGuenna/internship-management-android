@@ -1,3 +1,4 @@
+
 package com.example.internship_management;
 
 import android.os.Bundle;
@@ -11,14 +12,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.internship_management.adapter.EtudiantAdapter;
-import com.example.internship_management.adapter.OnItemDeleteListener;
 import com.example.internship_management.adapter.StudentAdapter;
+import com.example.internship_management.model.ResponsableStageDTO;
 import com.example.internship_management.model.Student;
+import com.example.internship_management.retrofit.ResponsableApi;
 import com.example.internship_management.retrofit.RetrofitService;
 import com.example.internship_management.retrofit.StudentApi;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -27,15 +29,16 @@ import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link DashbordFragment#newInstance} factory method to
+ * Use the {@link RespoDashboardFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DashbordFragment extends Fragment implements StudentAdapter.OnButtonClickListener {
+public class RespoDashboardFragment extends Fragment  implements StudentAdapter.OnButtonClickListener{
 
     private RecyclerView recyclerView;
     private FloatingActionButton add;
     Bundle bundle = new Bundle();
     Long id;
+    ResponsableStageDTO respo;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -46,7 +49,7 @@ public class DashbordFragment extends Fragment implements StudentAdapter.OnButto
     private String mParam1;
     private String mParam2;
 
-    public DashbordFragment() {
+    public RespoDashboardFragment() {
         // Required empty public constructor
     }
 
@@ -56,11 +59,11 @@ public class DashbordFragment extends Fragment implements StudentAdapter.OnButto
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment DAshbordFragment.
+     * @return A new instance of fragment RespoDashboardFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static DashbordFragment newInstance(String param1, String param2) {
-        DashbordFragment fragment = new DashbordFragment();
+    public static RespoDashboardFragment newInstance(String param1, String param2) {
+        RespoDashboardFragment fragment = new RespoDashboardFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -72,18 +75,47 @@ public class DashbordFragment extends Fragment implements StudentAdapter.OnButto
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            id = getArguments().getLong("id");
         }
-
     }
 
-    private void loadEmployees() {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_respo_dashboard, container, false);
+
+        recyclerView = view.findViewById(R.id.employeeList_recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        RetrofitService retrofitService = new RetrofitService();
+        ResponsableApi responsableApi = retrofitService.getRetrofit().create(ResponsableApi.class);
+        responsableApi.getById(id)
+                .enqueue(new Callback<ResponsableStageDTO>() {
+                    @Override
+                    public void onResponse(Call<ResponsableStageDTO> call, Response<ResponsableStageDTO> response) {
+                        respo = response.body();
+                        loadStudents();
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponsableStageDTO> call, Throwable t) {
+                        Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        return view;
+    }
+
+
+    private void loadStudents() {
         RetrofitService retrofitService = new RetrofitService();
         StudentApi studentApi = retrofitService.getRetrofit().create(StudentApi.class);
         studentApi.getAllStudents()
                 .enqueue(new Callback<List<Student>>() {
                     @Override
                     public void onResponse(Call<List<Student>> call, Response<List<Student>> response) {
-                        populateListView(response.body());
+                        populateView(response.body());
                     }
 
                     @Override
@@ -93,67 +125,22 @@ public class DashbordFragment extends Fragment implements StudentAdapter.OnButto
                 });
     }
 
-    private void populateListView(List<Student> studentList) {
-        StudentAdapter studentAdapter = new StudentAdapter(studentList, this);
-        recyclerView.setAdapter(studentAdapter);
-        /*studentAdapter.setOnItemDeleteListener(new OnItemDeleteListener() {
-            @Override
-            public void onItemDelete(int position) {
-                Student  item = studentList.get(position);
-                Long id = item.getId();
-                RetrofitService retrofitService = new RetrofitService();
-                StudentApi studentApi = retrofitService.getRetrofit().create(StudentApi.class);
-                studentApi.delete(id)
-                        .enqueue(new Callback<Void>() {
-                            @Override
-                            public void onResponse(Call<Void> call, Response<Void> response) {
-                                if(response.isSuccessful()){
-                                    studentList.remove(position);
-                                    studentAdapter.notifyItemRemoved(position);
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<Void> call, Throwable t) {
-                                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
-
+    private void populateView(List<Student> body) {
+        List<Student> students = new ArrayList<>();
+        for(Student s: body){
+            if (s.getEtablissement().getId() == respo.getEtablissementDTOS().getId()){
+                students.add(s);
             }
-        });
-
-         */
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        loadEmployees();
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_d_ashbord, container, false);
-        recyclerView = view.findViewById(R.id.employeeList_recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        
-        add = view.findViewById(R.id.employeeList_fab);
-        
-        add.setOnClickListener(View -> {
-            Fragment fragment = new AddStudentFragment();
-            loadFragment(fragment);
-
-        });
-
-        return view;
+        }
+        StudentAdapter studentAdapter = new StudentAdapter(students, this);
+        recyclerView.setAdapter(studentAdapter);
     }
 
     void loadFragment(Fragment fragment) {
         //to attach fragment
         getFragmentManager().beginTransaction().replace(R.id.frag, fragment).commit();
     }
+
 
     @Override
     public void onButtonClick(Long id) {

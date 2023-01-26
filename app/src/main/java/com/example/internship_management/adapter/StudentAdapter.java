@@ -34,7 +34,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentHolder>{
     @Override
     public StudentHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_student_item, parent, false);
+                .inflate(R.layout.new_list, parent, false);
         return new StudentHolder(view);
     }
 
@@ -42,9 +42,15 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentHolder>{
     public void onBindViewHolder(@NonNull StudentHolder holder, int position) {
         Student student = studentList.get(position);
         holder.id = student.getId();
-        holder.name.setText(student.getName());
-        holder.phone.setText(student.getPhoneNumber());
-        holder.niveau.setText(student.getNiveau());
+        holder.name.setText(student.getName() + " " + student.getLastName());
+        holder.phone.setText(student.getNiveau());
+        holder.num.setText(student.getPhoneNumber());
+        holder.etab.setVisibility(View.GONE);
+        if(student.getEtablissement() != null) {
+            holder.etab.setVisibility(View.VISIBLE);
+            holder.etab.setText(student.getEtablissement().getName());
+        }
+        //holder.niveau.setText(student.getNiveau());
         if(student.getEncadrant() == null){
             holder.prof.setVisibility(View.GONE);
             holder.affecter.setVisibility(View.VISIBLE);
@@ -57,10 +63,10 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentHolder>{
         } else {
             holder.prof.setVisibility(View.VISIBLE);
             holder.affecter.setVisibility(View.GONE);
-            ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) holder.view.getLayoutParams();
-            params.topToBottom = R.id.encad; // sets the left to right constraint to the id of other_view
-            holder.view.setLayoutParams(params);
-            holder.prof.setText(student.getEncadrant().getLastName());
+            //ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) holder.view.getLayoutParams();
+            //params.topToBottom = R.id.encad; // sets the left to right constraint to the id of other_view
+            //holder.view.setLayoutParams(params);
+            holder.prof.setText(student.getEncadrant().getName() + " " + student.getEncadrant().getLastName());
         }
     }
     @Override

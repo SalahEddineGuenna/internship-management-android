@@ -7,9 +7,11 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Path;
 
 public interface EtablissementApi {
 
@@ -19,6 +21,9 @@ public interface EtablissementApi {
     @POST("/etablissements/")
     Call<EtablissementDTO> save(@Body EtablissementDTO etablissementDTO);
 
-    @PUT("/etablissements/")
-    Call<EtablissementDTO> update(@Body EtablissementDTO etablissementDTO);
+    @PUT("/etablissements/{id}")
+    Call<EtablissementDTO> update(@Path("id")Long id, @Body EtablissementDTO etablissementDTO);
+
+    @DELETE("/etablissements/{id}")
+    Call<Void> delete(@Path("id") Long id);
 }

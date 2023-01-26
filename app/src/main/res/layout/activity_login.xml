@@ -65,6 +65,7 @@
         android:layout_height="wrap_content"
         android:text="Sign in"
         android:layout_marginTop="20dp"
-        android:id="@+id/bLogin"/>
+        android:id="@+id/bLogin"
+        android:backgroundTint="@color/green"/>
 
 </LinearLayout>

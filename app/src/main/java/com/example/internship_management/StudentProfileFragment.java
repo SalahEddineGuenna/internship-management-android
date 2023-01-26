@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -29,6 +30,7 @@ public class StudentProfileFragment extends Fragment {
 
     private TextInputEditText fname, lname, mail, phone, password, etabliss, username, niveau;
     private Button update;
+    AutoCompleteTextView spinner;
     Long id;
     Student student;
     // TODO: Rename parameter arguments, choose names that match
@@ -88,6 +90,9 @@ public class StudentProfileFragment extends Fragment {
         etabliss = view.findViewById(R.id.etabl);
         niveau = view.findViewById(R.id.etniveau);
         username = view.findViewById(R.id.etuser);
+        spinner = view.findViewById(R.id.spinner);
+
+
 
         update.setOnClickListener(view1 -> {
             updateStudent(id);
@@ -147,6 +152,9 @@ public class StudentProfileFragment extends Fragment {
         password.setText(student.getPassword());
         username.setText(student.getUsername());
         niveau.setText(student.getNiveau());
-        etabliss.setText(student.getEtablissement().getName());
+        if (student.getEtablissement() != null){
+            etabliss.setText(student.getEtablissement().getName());
+        }
+
     }
 }

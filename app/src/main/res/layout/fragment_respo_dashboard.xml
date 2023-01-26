@@ -4,9 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".DashbordFragment"
-    android:id="@+id/frag"
-    android:background="?android:attr/colorBackground">
+    tools:context=".RespoDashboardFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -34,4 +32,5 @@
             android:contentDescription="Add Student" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </FrameLayout>

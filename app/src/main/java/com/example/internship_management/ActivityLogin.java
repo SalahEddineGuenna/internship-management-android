@@ -59,30 +59,45 @@ public class ActivityLogin extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, names);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+       /* spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // Handle the item selected event
+                String item = parent.getItemAtPosition(position).toString();
+                if(item == "PROFFESSEUR"){
+                    register.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Handle when nothing is selected
+            }
+        }); */
 
         login.setOnClickListener(view -> {
             role = spinner.getText().toString();
             user = username.getText().toString();
             pass = password.getText().toString();
-            /*if(user.equals("admin") & pass.equals("")) {
+            if(user.equals("admin") & pass.equals("1234")) {
                 Intent intent = new Intent(ActivityLogin.this, ActivityHome.class);
                 startActivity(intent);
-            }else{
+            }else {
                 Toast.makeText(this, "You are not admin", Toast.LENGTH_SHORT).show();
-            }
+                switch (role) {
+                    case "ETUDIANT":
+                        loadStudent(user, pass);
+                        break;
+                    case "PROFFESSEUR":
+                        loadProf(user, pass);
+                        break;
+                    case "RESPONSABLE":
+                        loadRespo(user, pass);
+                        break;
 
-             */
-            switch(role){
-                case "ETUDIANT":
-                    loadStudent(user, pass);
-                    break;
-                case "PROFFESSEUR":
-                    loadProf(user, pass);
-                    break;
-                case "RESPONSABLE":
-                    loadRespo(user, pass);
-                    break;
-
+                }
             }
         });
     }

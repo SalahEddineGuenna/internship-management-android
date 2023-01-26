@@ -12,7 +12,7 @@ import com.example.internship_management.R;
 
 public class StudentHolder extends RecyclerView.ViewHolder {
 
-    TextView name, phone, niveau, prof;
+    TextView name, phone, niveau, prof, num, etab;
     Button affecter;
     View view;
     Long id;
@@ -24,6 +24,7 @@ public class StudentHolder extends RecyclerView.ViewHolder {
         niveau = itemView.findViewById(R.id.employeeListItem_branch);
         prof = itemView.findViewById(R.id.encad);
         affecter = itemView.findViewById(R.id.affecter);
-        view = itemView.findViewById(R.id.view);
+        num = itemView.findViewById(R.id.num);
+        etab = itemView.findViewById(R.id.etab);
     }
 }
