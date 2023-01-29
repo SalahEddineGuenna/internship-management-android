@@ -13,10 +13,10 @@ import retrofit2.http.Path;
 
 public interface ReunionApi {
 
-    @GET("/reunions/")
+    @GET("/reunions/all")
     Call<List<ReunionDTO>> getReunionByID();
 
-    @POST("/reunions/")
+    @POST("/reunions/add/")
     Call<ReunionDTO> save(@Body ReunionDTO reunionDTO);
 
     @GET("/reunions/prof/{id}")

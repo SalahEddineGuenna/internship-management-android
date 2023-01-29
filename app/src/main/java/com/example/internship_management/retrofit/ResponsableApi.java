@@ -14,18 +14,18 @@ import retrofit2.http.Path;
 
 public interface ResponsableApi {
 
-    @GET("/responsables/")
+    @GET("/responsables/all/")
     Call<List<ResponsableStageDTO>> getallRsponsables();
 
-    @GET("/responsables/{id}")
+    @GET("/responsables/find/{id}")
     Call<ResponsableStageDTO> getById(@Path("id") Long id);
 
     @GET("/responsables/user/{username}")
     Call<ResponsableStageDTO> getByUsername(@Path("username") String username);
 
-    @POST("/responsables/")
+    @POST("/responsables/add/")
     Call<ResponsableStageDTO> save(@Body ResponsableStageDTO responsableStageDTO);
 
-    @PUT("/responsables/{id}")
+    @PUT("/responsables/update/{id}")
     Call<ResponsableStageDTO> update(@Path("id")Long id, @Body ResponsableStageDTO responsableStageDTO);
 }

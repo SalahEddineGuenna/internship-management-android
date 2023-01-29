@@ -6,7 +6,25 @@ import java.util.Date;
 public class DocumentDTO {
     private Long id;
     private String name;
-    private Date dateSoumission;
+    private String dateSoumission;
+    private String dateModification;
+    private Student student;
+
+    public String getDateModification() {
+        return dateModification;
+    }
+
+    public void setDateModification(String dateModification) {
+        this.dateModification = dateModification;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
+    }
 
     public Long getId() {
         return id;
@@ -24,11 +42,11 @@ public class DocumentDTO {
         this.name = name;
     }
 
-    public Date getDateSoumission() {
+    public String getDateSoumission() {
         return dateSoumission;
     }
 
-    public void setDateSoumission(Date dateSoumission) {
+    public void setDateSoumission(String dateSoumission) {
         this.dateSoumission = dateSoumission;
     }
 

@@ -85,7 +85,6 @@ public class ActivityLogin extends AppCompatActivity {
                 Intent intent = new Intent(ActivityLogin.this, ActivityHome.class);
                 startActivity(intent);
             }else {
-                Toast.makeText(this, "You are not admin", Toast.LENGTH_SHORT).show();
                 switch (role) {
                     case "ETUDIANT":
                         loadStudent(user, pass);
@@ -109,7 +108,7 @@ public class ActivityLogin extends AppCompatActivity {
                 .enqueue(new Callback<Student>() {
                     @Override
                     public void onResponse(Call<Student> call, Response<Student> response) {
-                        if(checkStudent(pass, response.body())) {
+                        if(pass.equals(response.body().getPassword())) {
                             Intent intent = new Intent(ActivityLogin.this, StudentHomeActivity.class);
                             intent.putExtra("id", response.body().getId());
                             startActivity(intent);
@@ -124,8 +123,8 @@ public class ActivityLogin extends AppCompatActivity {
                     }
                 });
     }
-
-    private boolean checkStudent(String pass, Student student){
+/*
+    private boolean checkStudent(String pass, String){
 
         if(student != null) {
             if (pass.equals(student.getPassword())) {
@@ -135,6 +134,8 @@ public class ActivityLogin extends AppCompatActivity {
         return false;
 
     }
+
+ */
 
     private void loadProf(String user, String pass) {
         RetrofitService retrofitService = new RetrofitService();

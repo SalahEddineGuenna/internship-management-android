@@ -146,7 +146,7 @@ public class AffecterFragment extends Fragment {
                 .enqueue(new Callback<Student>() {
                     @Override
                     public void onResponse(Call<Student> call, Response<Student> response) {
-                        Toast.makeText(getContext(), "Save successful!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), response.body().toString(), Toast.LENGTH_SHORT).show();
 
                     }
 

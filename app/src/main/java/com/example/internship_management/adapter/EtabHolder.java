@@ -11,13 +11,16 @@ import com.example.internship_management.R;
 
 public class EtabHolder extends RecyclerView.ViewHolder {
 
-    TextView name, respo;
-    Button affecter;
+    TextView name, respo, mail, add;
+    Button affecter, edit;
 
     public EtabHolder(@NonNull View itemView) {
         super(itemView);
         name = itemView.findViewById(R.id.employeeListItem_name);
         respo = itemView.findViewById(R.id.encad);
         affecter = itemView.findViewById(R.id.affecter);
+        mail = itemView.findViewById(R.id.employeeListItem_location);
+        add = itemView.findViewById(R.id.etab);
+        edit = itemView.findViewById(R.id.edit);
     }
 }

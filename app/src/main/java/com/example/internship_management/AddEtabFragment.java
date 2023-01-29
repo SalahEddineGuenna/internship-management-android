@@ -37,7 +37,7 @@ import retrofit2.Response;
  */
 public class AddEtabFragment extends Fragment {
 
-    private TextInputEditText etabname;
+    private TextInputEditText etabname, mail, address;
 
     ResponsableStageDTO responsableStageDTO;
     private Button confirm;
@@ -77,8 +77,6 @@ public class AddEtabFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -90,46 +88,8 @@ public class AddEtabFragment extends Fragment {
 
         etabname = view.findViewById(R.id.etfetab);
         confirm = view.findViewById(R.id.bconfirm);
-        //final Spinner spinner = (Spinner) view.findViewById(R.id.etab);
-
-        /*RetrofitService retrofitServiceetab = new RetrofitService();
-        ResponsableApi responsableApi = retrofitServiceetab
-                .getRetrofit().create(ResponsableApi.class);
-        responsableApi.getallRsponsables()
-                .enqueue(new Callback<List<ResponsableStageDTO>>() {
-                    @Override
-                    public void onResponse(Call<List<ResponsableStageDTO>> call, Response<List<ResponsableStageDTO>> response) {
-                        if (response.isSuccessful()) {
-                            List<ResponsableStageDTO> data = response.body();
-                            ArrayList<String> names = new ArrayList<>();
-                            for(ResponsableStageDTO item: data){
-                                names.add(item.getName());
-                            }
-                            ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, names);
-                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            spinner.setAdapter(adapter);
-                            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                @Override
-                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                    // Get the selected item information here
-                                    responsableStageDTO = data.get(position);
-                                }
-
-                                @Override
-                                public void onNothingSelected(AdapterView<?> adapterView) {
-
-                                }
-                            });
-                        }
-                    }
-                    @Override
-                    public void onFailure(Call<List<ResponsableStageDTO>> call, Throwable t) {
-                        // handle failure
-                        Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-         */
+        mail = view.findViewById(R.id.etmail);
+        address = view.findViewById(R.id.address);
 
         RetrofitService retrofitService = new RetrofitService();
         EtablissementApi etablissementApi = retrofitService.getRetrofit().create(EtablissementApi.class);
@@ -137,6 +97,8 @@ public class AddEtabFragment extends Fragment {
 
             EtablissementDTO etab = new EtablissementDTO();
             etab.setName(String.valueOf(etabname.getText()));
+            etab.setMail(String.valueOf(mail.getText()));
+            etab.setAdress(String.valueOf(address.getText()));
 
             etablissementApi.save(etab)
                     .enqueue(new Callback<EtablissementDTO>() {

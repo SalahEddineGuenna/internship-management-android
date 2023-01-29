@@ -15,17 +15,17 @@ import retrofit2.http.Path;
 
 public interface ProfesseurApi {
 
-    @GET("/professeurs/")
+    @GET("/professeurs/all")
     Call<List<ProfesseurDTO>> getAllprofesseurs();
-    @GET("/professeurs/{id}")
+    @GET("/professeurs/find/{id}")
     Call<ProfesseurDTO> getById(@Path("id") Long id);
 
     @GET("/professeurs/user/{username}")
     Call<ProfesseurDTO> getByUsername(@Path("username") String username);
 
-    @POST("/professeurs/")
+    @POST("/professeurs/add")
     Call<ProfesseurDTO> save(@Body ProfesseurDTO professeurDTO);
 
-    @PUT("/professeurs/{id}")
+    @PUT("/professeurs/update/{id}")
     Call<ProfesseurDTO> update(@Path("id") Long id,@Body ProfesseurDTO professeurDTO);
 }

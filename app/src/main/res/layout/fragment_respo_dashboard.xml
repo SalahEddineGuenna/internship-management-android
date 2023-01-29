@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".RespoDashboardFragment">
+    tools:context=".RespoDashboardFragment"
+    android:background="?android:attr/colorBackground"
+    android:id="@+id/frag">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -12,7 +14,7 @@
 
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/employeeList_recyclerView"
+            android:id="@+id/studentList_recyclerView"
             android:layout_width="413dp"
             android:layout_height="654dp"
             app:layout_constraintBottom_toBottomOf="parent"

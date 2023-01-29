@@ -12,11 +12,15 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.internship_management.adapter.ReunionAdapter;
+import com.example.internship_management.model.ResponsableStageDTO;
 import com.example.internship_management.model.ReunionDTO;
+import com.example.internship_management.model.Student;
+import com.example.internship_management.retrofit.ResponsableApi;
 import com.example.internship_management.retrofit.RetrofitService;
 import com.example.internship_management.retrofit.ReunionApi;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -32,6 +36,12 @@ public class RespoMeetingsFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private FloatingActionButton add;
+
+    private Long id;
+
+    Bundle bundle = new Bundle();
+
+    private ResponsableStageDTO responsable;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -67,8 +77,7 @@ public class RespoMeetingsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            id = getArguments().getLong("id");
         }
     }
 
@@ -82,10 +91,14 @@ public class RespoMeetingsFragment extends Fragment {
 
         add = view.findViewById(R.id.meeting_fab);
 
+        loadRespo(id);
+
         loadMeetings();
 
         add.setOnClickListener(View -> {
+            bundle.putLong("id", id);
             Fragment fragment = new MeetingsFragment();
+            fragment.setArguments(bundle);
             loadFragment(fragment);
 
         });
@@ -109,14 +122,39 @@ public class RespoMeetingsFragment extends Fragment {
                 });
     }
 
+    private void loadRespo(Long id){
+        RetrofitService retrofitService = new RetrofitService();
+        ResponsableApi responsableApi = retrofitService.getRetrofit().create(ResponsableApi.class);
+        responsableApi.getById(id)
+                .enqueue(new Callback<ResponsableStageDTO>() {
+                    @Override
+                    public void onResponse(Call<ResponsableStageDTO> call, Response<ResponsableStageDTO> response) {
+                        responsable = response.body();
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponsableStageDTO> call, Throwable t) {
+
+                    }
+                });
+    }
+
     private void populateListView(List<ReunionDTO> reunionList) {
-        for(int i = 0; i < reunionList.size()/2; i++)
-        {
-            ReunionDTO temp = reunionList.get(i);
-            reunionList.set(i, reunionList.get(reunionList.size()-i-1));
-            reunionList.set(reunionList.size()-i-1, temp);
+        List<ReunionDTO> reunionDTOS = new ArrayList<>();
+        for(ReunionDTO r: reunionList){
+            if(r.getEtudiantDTO() != null & r.getEtudiantDTO().getEtablissement() != null && responsable != null) {
+                if (r.getEtudiantDTO().getEtablissement().getId() == responsable.getEtablissementDTOS().getId()) {
+                    reunionDTOS.add(r);
+                }
+            }
         }
-        ReunionAdapter reunionAdapter = new ReunionAdapter(reunionList);
+        for(int i = 0; i < reunionDTOS.size()/2; i++)
+        {
+            ReunionDTO temp = reunionDTOS.get(i);
+            reunionDTOS.set(i, reunionDTOS.get(reunionDTOS.size()-i-1));
+            reunionDTOS.set(reunionDTOS.size()-i-1, temp);
+        }
+        ReunionAdapter reunionAdapter = new ReunionAdapter(reunionDTOS);
         recyclerView.setAdapter(reunionAdapter);
     }
 

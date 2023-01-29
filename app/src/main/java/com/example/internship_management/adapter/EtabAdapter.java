@@ -35,6 +35,8 @@ public EtabHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 public void onBindViewHolder(@NonNull EtabHolder holder, int position) {
         EtablissementDTO etab = etabList.get(position);
         holder.name.setText(etab.getName());
+        holder.mail.setText(etab.getMail());
+        holder.add.setText(etab.getAdress());
 
         if(etab.getResponsableStageDTO() == null){
                 holder.respo.setVisibility(View.GONE);
@@ -47,6 +49,13 @@ public void onBindViewHolder(@NonNull EtabHolder holder, int position) {
                 @Override
                 public void onClick(View v) {
                         listener.onItemDelete(position);
+                }
+        });
+
+        holder.edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                        clickListener.onButtonClick(etab.getId());
                 }
         });
 

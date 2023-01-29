@@ -57,6 +57,9 @@ public class MeetingsFragment extends Fragment {
     private ProfesseurDTO professuer;
     private TextInputEditText date, time;
     private String selectedTime, selectedDate;
+
+    Long id;
+    ResponsableStageDTO responsable;
     int year, day, month, hour, minute;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -94,8 +97,7 @@ public class MeetingsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            id = getArguments().getLong("id");
         }
     }
 
@@ -111,6 +113,7 @@ public class MeetingsFragment extends Fragment {
 
         final Spinner prof = (Spinner) view.findViewById(R.id.spinner1);
         final Calendar c = Calendar.getInstance();
+        loadRespo(id);
 
 
         // make the network request to the server
@@ -124,7 +127,11 @@ public class MeetingsFragment extends Fragment {
                     List<Student> data = response.body();
                     ArrayList<String> names = new ArrayList<>();
                     for(Student item: data){
-                        names.add(item.getName());
+                        if(item.getEtablissement() != null) {
+                            if (item.getEtablissement().getId() == responsable.getEtablissementDTOS().getId()) {
+                                names.add(item.getName());
+                            }
+                        }
                     }
                     // create an ArrayAdapter with the data
                     ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, names);
@@ -288,6 +295,24 @@ public class MeetingsFragment extends Fragment {
         });
 
         return view;
+    }
+
+
+    private void loadRespo(Long id){
+        RetrofitService retrofitService = new RetrofitService();
+        ResponsableApi responsableApi = retrofitService.getRetrofit().create(ResponsableApi.class);
+        responsableApi.getById(id)
+                .enqueue(new Callback<ResponsableStageDTO>() {
+                    @Override
+                    public void onResponse(Call<ResponsableStageDTO> call, Response<ResponsableStageDTO> response) {
+                        responsable = response.body();
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponsableStageDTO> call, Throwable t) {
+
+                    }
+                });
     }
 
 

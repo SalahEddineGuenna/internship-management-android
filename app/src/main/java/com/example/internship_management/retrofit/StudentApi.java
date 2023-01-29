@@ -19,7 +19,7 @@ public interface StudentApi {
     @GET("/etudiants/all")
     Call<List<Student>> getAllStudents();
 
-    @GET("/etudiants/{id}")
+    @GET("/etudiants/find/{id}")
     Call<Student> getById(@Path("id") Long id);
 
     @GET("/etudiants/user/{username}")
@@ -31,9 +31,9 @@ public interface StudentApi {
     @POST("/etudiants/add/")
     Call<Student> save(@Body Student student);
 
-    @PUT("/etudiants/{id}")
+    @PUT("/etudiants/update/{id}")
     Call<Student> update(@Path("id") Long id, @Body Student student);
 
-    @DELETE("/etudiants/{id}")
+    @DELETE("/etudiants/delete/{id}")
     Call<Void> delete(@Path("id") Long id);
 }

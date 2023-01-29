@@ -22,7 +22,9 @@ public class RespoHomeActivity extends AppCompatActivity  implements BottomNavig
         bottomNavigationView = findViewById(R.id.respoBottom);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
         value = getIntent().getLongExtra("id", 0);
-        Fragment fragment = new DashbordFragment();
+        bundle.putLong("id", value);
+        Fragment fragment = new RespoDashboardFragment();
+        fragment.setArguments(bundle);
         loadFragment(fragment);
     }
 

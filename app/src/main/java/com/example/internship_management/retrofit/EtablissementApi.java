@@ -26,4 +26,7 @@ public interface EtablissementApi {
 
     @DELETE("/etablissements/{id}")
     Call<Void> delete(@Path("id") Long id);
+
+    @GET("/etablissements/{id}")
+    Call<EtablissementDTO> getById(@Path("id") Long id);
 }

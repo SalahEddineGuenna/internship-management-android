@@ -85,7 +85,7 @@ public class RespoDashboardFragment extends Fragment  implements StudentAdapter.
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_respo_dashboard, container, false);
 
-        recyclerView = view.findViewById(R.id.employeeList_recyclerView);
+        recyclerView = view.findViewById(R.id.studentList_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         RetrofitService retrofitService = new RetrofitService();
@@ -103,6 +103,16 @@ public class RespoDashboardFragment extends Fragment  implements StudentAdapter.
                         Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
+
+        add = view.findViewById(R.id.employeeList_fab);
+
+        add.setOnClickListener(View -> {
+            bundle.putLong("id", id);
+            Fragment fragment = new RespoAddStudentFragment();
+            fragment.setArguments(bundle);
+            loadFragment(fragment);
+
+        });
 
         return view;
     }
@@ -128,8 +138,10 @@ public class RespoDashboardFragment extends Fragment  implements StudentAdapter.
     private void populateView(List<Student> body) {
         List<Student> students = new ArrayList<>();
         for(Student s: body){
-            if (s.getEtablissement().getId() == respo.getEtablissementDTOS().getId()){
-                students.add(s);
+            if(s.getEtablissement() != null) {
+                if (s.getEtablissement().getId() == respo.getEtablissementDTOS().getId()) {
+                    students.add(s);
+                }
             }
         }
         StudentAdapter studentAdapter = new StudentAdapter(students, this);

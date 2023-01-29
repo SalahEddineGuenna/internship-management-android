@@ -34,6 +34,8 @@ public class EtabFragment extends Fragment implements EtabAdapter.OnButtonClickL
     private RecyclerView recyclerView;
     private FloatingActionButton add;
 
+    Bundle bundle = new Bundle();
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -158,19 +160,12 @@ public class EtabFragment extends Fragment implements EtabAdapter.OnButtonClickL
 
     @Override
     public void onButtonClick(Long id) {
-        RetrofitService retrofitService = new RetrofitService();
-        EtablissementApi etablissementApi = retrofitService.getRetrofit().create(EtablissementApi.class);
-        etablissementApi.delete(id)
-                .enqueue(new Callback<Void>() {
-                    @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
-
-                    }
-                });
+        Fragment fragment = null;
+        bundle.putLong("id", id);
+        fragment = new EtabEditFragment();
+        fragment.setArguments(bundle);
+        if (fragment != null){
+            loadFragment(fragment);
+        }
     }
 }

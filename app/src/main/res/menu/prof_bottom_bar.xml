@@ -14,12 +14,6 @@
         app:showAsAction="ifRoom"/>
 
     <item
-        android:title="Documents"
-        android:id="@+id/docs"
-        android:icon="@drawable/baseline_document_scanner_24"
-        app:showAsAction="ifRoom"/>
-
-    <item
         android:title="Profile"
         android:id="@+id/profile"
         android:icon="@drawable/profile"

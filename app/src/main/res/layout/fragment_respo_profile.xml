@@ -82,8 +82,8 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etabl"
-                    android:inputType="text"
-                    android:editable="false"
+                    android:enabled="false"
+                    android:inputType="none"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     />
